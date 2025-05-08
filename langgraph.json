@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "./my_agent"
+  ],
+  "graphs": {
+    "agent": "./my_agent/agent.py:graph",
+    "onboarding_agent": "./my_agent/agent.py:onboarding_workflow",
+    "recommendation_agent": "./my_agent/agent.py:recommendation_workflow",
+    "agent_hf": "./my_agent/ad_hf.py:graph_hf"
+  },
+  "env": ".env"
+}
