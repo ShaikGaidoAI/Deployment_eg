@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), ".")))
 from functions.prereq import llm
 
-from user_state import UserProfile
+from .user_state import UserProfile
 from pydantic import BaseModel, Field
 from typing import List
 
