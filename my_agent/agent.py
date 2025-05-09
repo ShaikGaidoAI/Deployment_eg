@@ -28,7 +28,7 @@ for p in sys.path:
     logging.info(p)
 
 
-from deps.__outer_my_agent.functions.prereq import llm, embeddings
+from functions.prereq import llm, embeddings
 
 # import json
 # from supabase import create_client, Client
@@ -62,14 +62,14 @@ from langgraph.types import interrupt, Command
 from langgraph.graph import StateGraph, START, END  
 from langgraph.checkpoint.memory import MemorySaver
 
-from deps.__outer_my_agent.my_agent.user_state import UserProfile
-from deps.__outer_my_agent.my_agent.supervisor_node import supervisor_node
-from deps.__outer_my_agent.my_agent.onboarding_agent import onboarding_workflow
+from my_agent.user_state import UserProfile
+from my_agent.supervisor_node import supervisor_node
+from my_agent.onboarding_agent import onboarding_workflow
 # print('hi')
-from deps.__outer_my_agent.my_agent.recommendation_agent import recommendation_workflow
+from my_agent.recommendation_agent import recommendation_workflow
 from typing import Literal
-from deps.__outer_my_agent.my_agent.policy_info_node import policy_info_node
-from deps.__outer_my_agent.my_agent.policy_comparison_node import policy_comparison_node
+from my_agent.policy_info_node import policy_info_node
+from my_agent.policy_comparison_node import policy_comparison_node
 
 MAX_ITERATIONS = 50  # Set a reasonable maximum number of iterations
 TIMEOUT_SECONDS = 300
