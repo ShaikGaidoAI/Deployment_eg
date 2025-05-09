@@ -2,10 +2,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
-os.environ['LANGCHAIN_TRACING'] = 'true'
-os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGSMITH_API_KEY")
-os.environ['LANGCHAIN_PROJECT'] = 'GAIDO-EXP'
+# os.environ['LANGCHAIN_TRACING'] = 'true'
+# os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
+# os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGSMITH_API_KEY")
+# os.environ['LANGCHAIN_PROJECT'] = 'GAIDO-EXP'
 
 import sys
 print(os.getenv("LANGSMITH_API_KEY"))

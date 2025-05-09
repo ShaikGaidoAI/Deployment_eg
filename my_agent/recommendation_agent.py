@@ -4,10 +4,10 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), ".")))
 from dotenv import load_dotenv
 load_dotenv()
-os.environ['LANGCHAIN_TRACING'] = 'true'
-os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGSMITH_API_KEY")
-os.environ['LANGCHAIN_PROJECT'] = 'GAIDO-EXP'
+# os.environ['LANGCHAIN_TRACING'] = 'true'
+# os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
+# os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGSMITH_API_KEY")
+# os.environ['LANGCHAIN_PROJECT'] = 'GAIDO-EXP'
 
 from functions.prereq import llm
 from functions.fx import answer_question, react_agent
