@@ -14,6 +14,20 @@ api_key = os.getenv("GOOGLE_API_KEY")
 # os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGSMITH_API_KEY")
 # os.environ['LANGCHAIN_PROJECT'] = 'GAIDO-EXP'
 
+import os
+import sys
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+logging.info("=== Current File Path === %s", os.path.abspath(__file__))
+logging.info("=== Current Working Directory (CWD) === %s", os.getcwd())
+
+logging.info("=== Python sys.path ===")
+for p in sys.path:
+    logging.info(p)
+
+
 from functions.prereq import llm, embeddings
 
 # import json

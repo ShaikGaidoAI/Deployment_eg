@@ -18,34 +18,34 @@ structured_llm = llm.with_structured_output(QueryResponse)
 #     pre_existing_conditions=["Hypertension"],
 # )
 
-import json, os
-from supabase import create_client, Client
+# import json, os
+# from supabase import create_client, Client
 
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_SERVICE_KEY")
-supabase: Client = create_client(url, key)
+# url = os.getenv("SUPABASE_URL")
+# key = os.getenv("SUPABASE_SERVICE_KEY")
+# supabase: Client = create_client(url, key)
 
-import uuid
-from typing import Optional
+# import uuid
+# from typing import Optional
 
-def update_state(state: UserProfile, id: Optional[str] = None):
-    record_id = str(id) if id else str(uuid.uuid4())
-    supabase.table("user_profiles").upsert({
-        "id": record_id,
-        "state": state.model_dump()
-    }).execute()
+# def update_state(state: UserProfile, id: Optional[str] = None):
+#     record_id = str(id) if id else str(uuid.uuid4())
+#     supabase.table("user_profiles").upsert({
+#         "id": record_id,
+#         "state": state.model_dump()
+#     }).execute()
 
-def get_state(id: str) -> Optional[UserProfile]:
-    response = supabase.table("user_profiles").select("state").eq("id", id).execute()
+# def get_state(id: str) -> Optional[UserProfile]:
+#     response = supabase.table("user_profiles").select("state").eq("id", id).execute()
     
-    if not response.data:
-        return None  # or raise an exception/log it
+#     if not response.data:
+#         return None  # or raise an exception/log it
     
-    state_data = response.data[0]["state"]
-    return UserProfile(**state_data)
+#     state_data = response.data[0]["state"]
+#     return UserProfile(**state_data)
 
 
-id = str(uuid.uuid4())  # Generate a valid UUID string
+# id = str(uuid.uuid4())  # Generate a valid UUID string
 
 # ============================================================================
 # Supervisor Node
@@ -68,26 +68,26 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     # State Initialization
     # ------------------------------------------------------------------------------------------------
     
-    # Check if this is the first interaction (state hasn't been initialized yet)
-    if state.interaction_count == 0:
-        try:
+    # # Check if this is the first interaction (state hasn't been initialized yet)
+    # if state.interaction_count == 0:
+    #     try:
             
-            # state = user_1
-            # Initialize the state with data from the database
-            state = get_state(id)
+    #         # state = user_1
+    #         # Initialize the state with data from the database
+    #         state = get_state(id)
 
-            # Update the state with data from the database
-            return Command(
-                goto="ask_gaido",
-                update={
-                    **state.model_dump(),
-                    "interaction_count": 1
-                }
-            )
-        except Exception as e:
-            # Log the error but continue with default state if database fetch fails
-            print(f"Error initializing from database: {e}")
-            # Continue with normal flow
+    #         # Update the state with data from the database
+    #         return Command(
+    #             goto="ask_gaido",
+    #             update={
+    #                 **state.model_dump(),
+    #                 "interaction_count": 1
+    #             }
+    #         )
+    #     except Exception as e:
+    #         # Log the error but continue with default state if database fetch fails
+    #         print(f"Error initializing from database: {e}")
+    #         # Continue with normal flow
 
     if state.greeting_done == False:
         response = f'''Welcome {state.name if state.name else "!"} 😊
@@ -100,7 +100,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
         
         # UPDATING CHAT HISTORY
         state.messages.append("assistant: " + response + "user: " + state.user_intent_query)
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="ask_gaido",
             update={
@@ -156,8 +156,8 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
             state.messages.append("assistant: " + user_output + "user: " + user_updates)
             
             
-            if user_updates == "yes":
-                update_state(state, id)
+            if user_updates.lower() == "yes":
+                # update_state(state, id)
                 return Command(
             goto="onboarding_agent",
             update={
@@ -173,7 +173,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
             )
 
             else:
-                update_state(state, id)
+                # update_state(state, id)
                 return Command(
                     goto="ask_gaido",
                     update={
@@ -190,7 +190,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     # 3. Increments interaction count
     # ------------------------------------------------------------------------------------------------
     if response.query_type == "policy_comparison_request":
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="policy_comparison",
             update={
@@ -209,7 +209,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     # 3. Increments interaction count
     # ------------------------------------------------------------------------------------------------
     elif response.query_type == "policy_information_request" or response.query_type == "insurer_information_request" or response.query_type == "service_information_request":
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="policy_info",
             update={
@@ -228,7 +228,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     # 3. Increments interaction count
     # ------------------------------------------------------------------------------------------------
     elif response.query_type == "analysis_request":
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="policy_comparison",
             update={
@@ -246,7 +246,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     # 2. Updates state with current workflow and interaction count
     # ------------------------------------------------------------------------------------------------
     if not state.onboarding_complete:
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="onboarding_agent",
             update={
@@ -258,7 +258,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     
     # If onboarding is complete but recommendation is not, go to recommendation agent
     if state.onboarding_complete and not state.recommendation_complete:
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto="recommendation_agent",
             update={
@@ -270,7 +270,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
     
     # If both are complete, end the process
     if state.onboarding_complete and state.recommendation_complete:
-        update_state(state, id)
+        # update_state(state, id)
         return Command(
             goto=END,
             update={
@@ -281,7 +281,7 @@ def supervisor_node(state: UserProfile)->Command[Literal["onboarding_agent", "re
         )
     
     # Default case - stay in supervisor
-    update_state(state, id)
+    # update_state(state, id)
     return Command(
         goto="ask_gaido",
         update={
